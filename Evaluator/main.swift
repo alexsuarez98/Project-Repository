@@ -60,8 +60,11 @@ func chooseLogic() -> String {
     else if(["eq", "EQ", "equates", "Equates", "EQUATES"].contains(boolFunc)){
         RboolFunc = "eq"
     }
-    else if(["neq", "NEQ", "Neq", "negate", "NEGATE", "Negate"].contains(boolFunc)){
+    else if(["neq", "NEQ", "Neq"].contains(boolFunc)){
         RboolFunc = "neq"
+    }
+    else if(["NEGATE", "Negate", "negate", "NEG", "Neg", "neg"].contains(boolFunc)){
+        RboolFunc = "negate"
     }
     else if(["xor", "XOR", "Xor"].contains(boolFunc)){
         RboolFunc = "xor"
@@ -74,16 +77,209 @@ func chooseLogic() -> String {
     if RboolFunc == "Wrong" {
         chooseLogic()
     }
-
+    
     return RboolFunc
 }
+
+func execute(A: Int, B: Int, function: String) -> String {
+    if function == "and" {
+        return AND(A: A, B: B)
+    }
+    else if function == "nand" {
+        return NAND(A: A, B: B)
+    }
+    else if function == "or" {
+        return OR(A: A, B: B)
+    }
+    else if function == "nor" {
+        return NOR(A: A, B: B)
+    }
+    else if function == "eq" {
+        return EQ(A: A, B: B)
+    }
+    else if function == "neq" {
+        return NEQ(A: A, B: B)
+    }
+    else if function == "negate" {
+        return NEGATE(A: A, B: B)
+    }
+    else {
+        return OR(A: A, B: B)
+    }
+}
    
+func AND(A: Int, B: Int) -> String {
+    var answer = ""
+    if A == 1 {
+        if B == 1 {
+            answer = "true"
+        }
+        else {
+            answer = "false"
+        }
+    }
+    else {
+        answer = "false"
+    }
+    return answer
+}
 
+func NAND(A: Int, B: Int) -> String {
+    var answer = ""
+    if A == 1 {
+        if B == 1 {
+            answer = "false"
+        }
+        else {
+            answer = "true"
+        }
+    }
+    else {
+        answer = "true"
+    }
+    return answer
+}
 
-let A = userInput(varName: "A")
-let B = userInput(varName: "B")
+func OR(A: Int, B: Int) -> String {
+    var answer = ""
+    if A == 0 {
+        if B == 0 {
+            answer = "false"
+        }
+        else {
+            answer = "true"
+        }
+    }
+    else {
+        answer = "true"
+    }
+    return answer
+}
 
-let LogicalFunction = chooseLogic()
+func NOR(A: Int, B: Int) -> String {
+    var answer = ""
+    if  A == 0 {
+        if B == 0 {
+            answer = "true"
+        }
+        else {
+            answer = "false"
+        }
+    }
+    else {
+        answer = "false"
+    }
+    return answer
+}
+
+func EQ(A: Int, B: Int) -> String {
+    var answer = ""
+    if A == B {
+        answer = "true"
+    }
+    else {
+        answer = "false"
+    }
+    return answer
+}
+func NEQ(A: Int, B: Int) -> String {
+    var answer = ""
+    if A == B {
+        answer = "false"
+    }
+    else {
+        answer = "true"
+    }
+    return answer
+}
+
+func NEGATE(A: Int, B: Int) -> String {
+    
+    print("Would you like to negate A or B?")
+    let AorB = readLine()
+    var answer = ""
+    if (["A", "a"].contains(AorB)) {
+        if A == 1 {
+            answer = "false"
+        }
+        else {
+            answer = "true"
+        }
+    }
+    else if(["B", "b"].contains(AorB)) {
+        if B == 1 {
+            answer = "false"
+        }
+        else {
+            answer = "true"
+        }
+    }
+    else {
+        print("Please input an accpeted value (A/B)")
+        NEQ(A: A, B: B)
+    }
+    return answer
+
+}
+
+func XOR(A: Int, B: Int) -> String {
+    var answer = ""
+    if A == B {
+        answer = "false"
+    }
+    else {
+        answer = "true"
+    }
+    return answer
+}
+    
+
+func YN() -> String {
+    let yesOrNo = readLine()
+    var RyesOrNo = ""
+
+    if(["Y", "y", "Yes", "yes"].contains(yesOrNo)) {
+        RyesOrNo = "y"
+    }
+    else if (["N", "n", "No", "no"].contains(yesOrNo)) {
+        RyesOrNo = "n"
+    }
+    else {
+        print("Please enter an accepted value (y/n)")
+        RyesOrNo = "wrong"
+    }
+
+    if RyesOrNo == "wrong" {
+        YN ()
+    }
+    return RyesOrNo
+}       
+            
+func main() {
+    let A = userInput(varName: "A")
+    //print(A)
+    let B = userInput(varName: "B")
+    //print(B)
+    
+    let LogicalFunction = chooseLogic()
+    //print(LogicalFunction)
+    
+    let finalAnswer = execute(A: A, B: B, function: LogicalFunction)
+    print("The outcome of your logical function is \(finalAnswer)!")
+
+    print("Would you like to evaluate again? (y/n)")
+    let YorN = YN()
+    if YorN == "y" {
+        main()
+    }
+    else {
+        print("Thank you for your time.")
+    }
+    
+}
+
+main()
+
 //func main() {
 // 1. Read user input
 // 2. 
